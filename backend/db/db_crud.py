@@ -24,6 +24,9 @@ def update_records(new_records):
     Args:
         new_records - Список новых записей
     """
+    if not new_records:
+        return
+
     cursor.execute(open(get_absolute_path('sql/clear_records.sql'), "r").read())
     values = []
     for record in new_records:
@@ -44,8 +47,4 @@ def init_db():
     cursor.execute(open(get_absolute_path('sql/create_table.sql'), "r").read())
     connection.commit()
 
-    new_records = fetch_spreadsheet()
-    if new_records:
-        update_records(new_records)
-
-    connection.commit()
+    update_records(fetch_spreadsheet())
