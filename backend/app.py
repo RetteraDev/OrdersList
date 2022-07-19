@@ -12,3 +12,6 @@ app = Flask(__name__)
 
 # Подключим EndPoints для запросов
 import views
+
+# Подключим события по расписанию
+import shedulers
