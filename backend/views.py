@@ -8,5 +8,5 @@ from db.db_crud import get_all_records
 
 
 @app.route('/get_data')
-def hello():
+def get_data():
     return jsonify({'orders': get_all_records()})
