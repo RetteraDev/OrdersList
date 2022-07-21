@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,17 +8,25 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 
-const rows = [
-    { Id: 1, OrderNumber: 600, CostDollar: 10, CostRuble: 600, DeliveryDate: "2019-10-24" },
-    { Id: 2, OrderNumber: 601, CostDollar: 20, CostRuble: 1200, DeliveryDate: "2019-10-24" },
-    { Id: 3, OrderNumber: 602, CostDollar: 30, CostRuble: 1800, DeliveryDate: "2019-10-24" }
-];
-
-function load_more_orders(event: React.MouseEvent) {
-  event.preventDefault();
-}
-
 export default function Orders() {
+  const [currentPage, setCurrentPage] = useState(0)
+  const [hasMore, setHasMore] = useState(false)
+  const [orders, setOrders] = useState([]);
+
+  function load_more_orders() {
+    fetch('http://127.0.0.1:5000/get_data?Page=' + currentPage)
+    .then((response) => response.json())
+    .then((data) => {
+        setCurrentPage(currentPage + 1);
+        setHasMore(data.HasMore);
+        setOrders([...orders, ...data.Orders]);
+    });
+  }
+
+  useEffect(() => {
+    load_more_orders();
+  }, []);
+
   return (
     <React.Fragment>
       <Table size="small">
@@ -32,20 +40,22 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.Id}>
-              <TableCell align="center">{row.Id}</TableCell>
-              <TableCell align="center">{row.OrderNumber}</TableCell>
-              <TableCell align="center">{row.CostDollar}</TableCell>
-              <TableCell align="center">{row.CostRuble}</TableCell>
-              <TableCell align="center">{row.DeliveryDate}</TableCell>
+          {orders.map((order) => (
+            <TableRow key={order.Id}>
+              <TableCell align="center">{order.Id}</TableCell>
+              <TableCell align="center">{order.OrderId}</TableCell>
+              <TableCell align="center">{order.CostInDollars}</TableCell>
+              <TableCell align="center">{order.CostInRubles}</TableCell>
+              <TableCell align="center">{order.DeliveryDate}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      { hasMore &&
       <Typography align='center'>
         <Button variant="contained" onClick={load_more_orders} sx={{ mt: 3 }}>Еще</Button>
       </Typography>
+      }
     </React.Fragment>
   );
 }
