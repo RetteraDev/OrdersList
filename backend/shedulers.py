@@ -2,10 +2,13 @@
 __author__ = 'RetteraDev'
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from db.db_crud import update_records
+from models.orders import refill
 from external_api.google_sheets import fetch_spreadsheet
 
 
 scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(update_records, 'interval', args=[fetch_spreadsheet()], minutes=5)
+
+# Обновление записей из Google Sheets каждые 10 секунд
+scheduler.add_job(refill, 'interval', args=[fetch_spreadsheet()], seconds=10)
+
 scheduler.start()

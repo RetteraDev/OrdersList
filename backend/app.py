@@ -2,13 +2,20 @@
 __author__ = 'RetteraDev'
 
 from flask import Flask
-from db.db_crud import init_db
-
-# Выполнение операций по инициализации базы данных
-init_db()
+from flask_sqlalchemy import SQLAlchemy
+from config import DB_PATH, DEBUG
 
 # Запуск сервера
 app = Flask(__name__)
+
+# Конфигурация базы данных
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_PATH
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# Подключим модели таблиц из базы и создадим их
+import models.orders
+db.create_all()
 
 # Подключим EndPoints для запросов
 import views
