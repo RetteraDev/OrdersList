@@ -14,7 +14,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer)
     cost = db.Column(db.Integer)
-    delivery_date = db.Column(db.DateTime)
+    delivery_date = db.Column(db.Date)
 
     def __init__(self, id: int, order_id: int, cost: int, delivery_date: date) -> None:
         """Создание объекта заказа
@@ -57,9 +57,10 @@ def get_orders(page: int, limit: int) -> list:
 
 
 def get_stats() -> list:
-    """Метод возвращает значения для списка заказов с пагинацией
-    Args:
-        page - Страница запроса
-        limit - Лимит записей
-    """
-    return db.session.query(Order.delivery_date, func.sum(Order.cost)).group_by(Order.delivery_date).all()
+    """Метод возвращает значения для списка заказов с пагинацией"""
+    return db.session.query(Order.delivery_date, func.sum(Order.cost)).group_by(Order.delivery_date).order_by(Order.delivery_date).all()
+
+
+def get_orders_total() -> int:
+    """Метод возвращает общие число и сумму заказов"""
+    return db.session.query(func.count(Order.id), func.sum(Order.cost)).one()
