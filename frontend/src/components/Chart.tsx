@@ -1,24 +1,29 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 
-const data = [
-    { DeliveryDate: "2019-10-20", Costs: 100 },
-    { DeliveryDate: "2019-10-21", Costs: 400 },
-    { DeliveryDate: "2019-10-22", Costs: 600 },
-    { DeliveryDate: "2019-10-23", Costs: 20 },
-    { DeliveryDate: "2019-10-24", Costs: 600 },
-    { DeliveryDate: "2019-10-25", Costs: 500 },
-    { DeliveryDate: "2019-10-26", Costs: 1000 }
-];
 
 export default function Chart() {
   const theme = useTheme();
 
+  const [stats, setStats] = useState([]);
+  
+  function load_statistics() {
+    fetch('http://127.0.0.1:5000/get_stats')
+    .then((response) => response.json())
+    .then((data) => {
+        setStats([...stats, ...data.Stats]);
+    });
+  }
+
+  useEffect(() => {
+    load_statistics();
+  }, []);
+
   return (
     <ResponsiveContainer width="100%" height={400}>
           <LineChart
-          data={data}
+          data={stats}
           margin={{
               top: 16,
               right: 16,

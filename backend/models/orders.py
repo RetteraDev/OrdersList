@@ -1,6 +1,7 @@
 """Модель таблицы заказов и операции над ней"""
 __author__ = 'RetteraDev'
 
+from sqlalchemy.sql import func
 from datetime import date
 
 from app import db
@@ -38,7 +39,7 @@ def refill(orders: list) -> None:
     if not orders:
         return
     # Удалим старые записи
-    db.session.query(Order).delete()
+    Order.query.delete()
     db.session.commit()
 
     # Запишем новые
@@ -53,3 +54,12 @@ def get_orders(page: int, limit: int) -> list:
         limit - Лимит записей
     """
     return db.session.query(Order).limit(limit).offset(page * limit).all()
+
+
+def get_stats() -> list:
+    """Метод возвращает значения для списка заказов с пагинацией
+    Args:
+        page - Страница запроса
+        limit - Лимит записей
+    """
+    return db.session.query(Order.delivery_date, func.sum(Order.cost)).group_by(Order.delivery_date).all()
