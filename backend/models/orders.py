@@ -38,7 +38,7 @@ def refill(orders: list) -> None:
     if not orders:
         return
     # Удалим старые записи
-    db.session.query(Order).delete()
+    Order.query.delete()
     db.session.commit()
 
     # Запишем новые

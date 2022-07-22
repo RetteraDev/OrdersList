@@ -1,14 +1,16 @@
 """Планировщики заданий по графику"""
 __author__ = 'RetteraDev'
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from flask_apscheduler import APScheduler
 from models.orders import refill
 from external_api.google_sheets import fetch_spreadsheet
+from app import app
 
-
-scheduler = BackgroundScheduler(daemon=True)
-
-# Обновление записей из Google Sheets каждые 10 секунд
-scheduler.add_job(refill, 'interval', args=[fetch_spreadsheet()], seconds=10)
-
+scheduler = APScheduler()
+scheduler.api_enabled = True
+scheduler.init_app(app)
 scheduler.start()
+
+@scheduler.task('interval', id='fetch_spreadsheet')
+def fetch_spreadsheet_job():
+    refill(fetch_spreadsheet())
