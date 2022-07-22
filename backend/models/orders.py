@@ -1,6 +1,7 @@
 """Модель таблицы заказов и операции над ней"""
 __author__ = 'RetteraDev'
 
+from sqlalchemy.sql import func
 from datetime import date
 
 from app import db
@@ -53,3 +54,12 @@ def get_orders(page: int, limit: int) -> list:
         limit - Лимит записей
     """
     return db.session.query(Order).limit(limit).offset(page * limit).all()
+
+
+def get_stats() -> list:
+    """Метод возвращает значения для списка заказов с пагинацией
+    Args:
+        page - Страница запроса
+        limit - Лимит записей
+    """
+    return db.session.query(Order.delivery_date, func.sum(Order.cost)).group_by(Order.delivery_date).all()
