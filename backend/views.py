@@ -2,8 +2,9 @@
 __author__ = 'RetteraDev'
 
 from flask import jsonify, request
-from app import app
 
+from app import app
+from external_api.central_bank import get_dollar_course
 from models.orders import get_orders, get_stats
 
 
@@ -13,8 +14,8 @@ def get_data_route():
     page = int(request.args.get('Page') or 0)
     limit = int(request.args.get('Limit') or 10)
 
-    # Получим курс доллара с ЦБ РФ
-    cost_of_dollar = 60
+    # Получим курс доллара от ЦБ РФ
+    cost_of_dollar = get_dollar_course()
 
     orders = []
     for order in get_orders(page, limit):
