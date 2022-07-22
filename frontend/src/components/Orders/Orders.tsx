@@ -44,9 +44,9 @@ export default function Orders() {
             <TableRow key={order.Id}>
               <TableCell align="center">{order.Id}</TableCell>
               <TableCell align="center">{order.OrderId}</TableCell>
-              <TableCell align="center">{order.CostInDollars}</TableCell>
-              <TableCell align="center">{order.CostInRubles}</TableCell>
-              <TableCell align="center">{order.DeliveryDate}</TableCell>
+              <TableCell align="center">{order.CostUSD}</TableCell>
+              <TableCell align="center">{order.CostRUB}</TableCell>
+              <TableCell align="center">{new Date(order.DeliveryDate).toLocaleDateString('ru')}</TableCell>
             </TableRow>
           ))}
         </TableBody>

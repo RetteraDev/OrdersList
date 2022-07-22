@@ -1,6 +1,6 @@
-import Chart from './components/Chart.tsx';
-import Orders from './components/Orders.tsx';
-import Title from './components/Title.tsx';
+import Chart from './components/Chart/Chart.tsx';
+import Orders from './components/Orders/Orders.tsx';
+import Title from './components/Title/Title.tsx';
 
 function App() {
   return (
