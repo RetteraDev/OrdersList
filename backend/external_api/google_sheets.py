@@ -4,9 +4,11 @@ __author__ = 'RetteraDev'
 import gspread
 from typing import Optional
 
+from config import GOOGLE_SHEETS_SERVICE_ACCOUNT_KEY, GOOGLE_SHEETS, get_abs_path
 
-gc = gspread.service_account()
-sheet = gc.open_by_url('https://docs.google.com/spreadsheets/d/1eJ6FXLDYms009w4K0FDgVgDVF6cXzditrKtyMlh2j_k/edit#gid=0').sheet1
+
+gc = gspread.service_account(filename=get_abs_path(GOOGLE_SHEETS_SERVICE_ACCOUNT_KEY))
+sheet = gc.open_by_url(GOOGLE_SHEETS).sheet1
 
 
 def fetch_spreadsheet() -> Optional[list]:

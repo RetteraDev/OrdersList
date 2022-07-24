@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { API_SERVER } from '../../config.js'
 import styles from './Chart.module.css';
 
 
@@ -25,7 +26,7 @@ export default function Chart() {
   const [total_cost_rub, setTotalCostRUB] = useState([]);
   
   function load_statistics() {
-    fetch('http://127.0.0.1:5000/get_stats')
+    fetch(API_SERVER + 'get_stats')
     .then((response) => response.json())
     .then((data) => {
         setStats(data.Stats);

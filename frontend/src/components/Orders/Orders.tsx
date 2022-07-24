@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { API_SERVER } from '../../config.js'
 
 
 export default function Orders() {
@@ -14,7 +15,7 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
 
   function load_more_orders() {
-    fetch('http://127.0.0.1:5000/get_data?Page=' + currentPage)
+    fetch(API_SERVER + 'get_data?Page=' + currentPage)
     .then((response) => response.json())
     .then((data) => {
         setCurrentPage(currentPage + 1);
