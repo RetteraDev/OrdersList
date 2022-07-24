@@ -3,14 +3,14 @@ __author__ = 'RetteraDev'
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import DB_PATH, DEBUG
+from config import DB_PATH, DB_TRACK_MODIFICATIONS
 
 # Запуск сервера
 app = Flask(__name__)
 
 # Конфигурация базы данных
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_PATH
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = DB_TRACK_MODIFICATIONS
 db = SQLAlchemy(app)
 
 # Подключим модели таблиц из базы и создадим их

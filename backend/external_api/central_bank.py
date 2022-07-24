@@ -5,5 +5,5 @@ from pycbrf.toolbox import ExchangeRates
 from datetime import date
 
 
-def get_dollar_course() -> float:
+def get_USD_cost() -> float:
     return ExchangeRates(date.today())['USD'].value

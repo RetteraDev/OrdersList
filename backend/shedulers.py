@@ -6,11 +6,12 @@ from models.orders import refill
 from external_api.google_sheets import fetch_spreadsheet
 from app import app
 
+
 scheduler = APScheduler()
 scheduler.api_enabled = True
 scheduler.init_app(app)
 scheduler.start()
 
-@scheduler.task('interval', id='fetch_spreadsheet')
+@scheduler.task('interval', id='fetch_spreadsheet', seconds=3, misfire_grace_time=90)
 def fetch_spreadsheet_job():
     refill(fetch_spreadsheet())
